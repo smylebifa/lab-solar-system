@@ -1,0 +1,4 @@
+D:\Programming\Qt, С++\Projects\Solar-system\Debug\SolarSystem.exe
+D:\Programming\Qt, С++\Projects\Solar-system\Debug\SolarSystem.pdb
+D:\Programming\Qt, С++\Projects\Solar-system2\Debug\SolarSystem.exe
+D:\Programming\Qt, С++\Projects\Solar-system2\Debug\SolarSystem.pdb

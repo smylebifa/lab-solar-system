@@ -1,0 +1,7 @@
+﻿  main.cpp
+D:\Programming\Qt, С++\Projects\Solar-system2\main.cpp(90,28): warning C4305: аргумент: усечение из "double" в "GLfloat"
+D:\Programming\Qt, С++\Projects\Solar-system2\main.cpp(106,46): warning C4244: аргумент: преобразование "double" в "GLfloat", возможна потеря данных
+D:\Programming\Qt, С++\Projects\Solar-system2\main.cpp(106,29): warning C4244: аргумент: преобразование "double" в "GLfloat", возможна потеря данных
+D:\Programming\Qt, С++\Projects\Solar-system2\main.cpp(111,46): warning C4244: аргумент: преобразование "double" в "GLfloat", возможна потеря данных
+D:\Programming\Qt, С++\Projects\Solar-system2\main.cpp(111,29): warning C4244: аргумент: преобразование "double" в "GLfloat", возможна потеря данных
+  SolarSystem.vcxproj -> D:\Programming\Qt, С++\Projects\Solar-system2\Debug\SolarSystem.exe
