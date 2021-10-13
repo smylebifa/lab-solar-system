@@ -2,7 +2,7 @@
 
 using namespace std;
 
-struct Point
+struct Planet
 {
     double x, y;
 };
@@ -10,10 +10,10 @@ struct Point
 class Body
 {
 public:
-    Point Pos, Speed;
-    vector <Point> elements; 
+    Planet Pos, Speed;
+    vector <Planet> elements; // положение планет 
     
-    double m; // масса
+    double m; // масса планеты
     
     void Move();
     void PaintPhysic(); // отрисовка векторов

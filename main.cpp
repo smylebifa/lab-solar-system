@@ -7,7 +7,7 @@ const double G = pow(6.6738480808080, -11);
 bool keys[256];
 int width, height;
 double XScreen, YScreen, Xf, Yf;
-Body Planet[5];
+Body Planets[5];
 
 void SpeedBody(Body* t1, Body* t2)
 {
@@ -27,18 +27,11 @@ void SpeedBody(Body* t1, Body* t2)
     t1->Speed.x += x * a1;
     t1->Speed.y += y * a1;
 
-    //t2->Speed.x += x * a2;
-    //t2->Speed.y += y * a2;
-
     t1->Move();
-    //t2->Move();
 }
 
 void Reshape(int width, int height)
 {
-    /* Высота 1.0  - это 768 пиксилей, если высота монитора больше, 
-    следовательно вещественное значение больше. Такая же ситуация с шириной. 
-    Сделано для того, чтобы разрешение экрана давало приимущество*/
     XScreen = (double)width / (double)1280;
     YScreen = (double)height / (double)1024;
 
@@ -62,18 +55,7 @@ void PassiveMotionFunc(int x, int y)
     Yf = -(YScreen * 2 * (float)y / (float)height - (YScreen));
 }
 
-void MouseDown(int button, int state, int x, int y)
-{
-    Xf = XScreen * 2 * (float)x / (float)width - (XScreen);
-    Yf = -(YScreen * 2 * (float)y / (float)height - (YScreen));
-
-    if (state == GLUT_DOWN)
-    {
-        Planet[1].Speed.x += (Xf - Planet[1].Pos.x) / 200.0;
-        Planet[1].Speed.y += (Yf - Planet[1].Pos.y) / 200.0;
-    }
-}
-
+// Выход с помощью escape
 void KeyProc(unsigned char key, int x, int y)
 {
     if (key == 27)
@@ -81,10 +63,6 @@ void KeyProc(unsigned char key, int x, int y)
     keys[key] = true;
 }
 
-void KeyUpProc(unsigned char key, int x, int y)
-{
-    keys[key] = false;
-}
 
 void Draw(void)
 {
@@ -107,33 +85,33 @@ void Draw(void)
     glEnable(GL_POINT_SMOOTH);
 
     glBegin(GL_POINTS);
-    glVertex2f(Planet[0].Pos.x, Planet[0].Pos.y);
+    glVertex2f(Planets[0].Pos.x, Planets[0].Pos.y);
     glEnd();
 
     glPointSize(20);
     glBegin(GL_POINTS);
-    glVertex2f(Planet[1].Pos.x, Planet[1].Pos.y);
+    glVertex2f(Planets[1].Pos.x, Planets[1].Pos.y);
     glEnd();
 
     glPointSize(19);
     glBegin(GL_POINTS);
-    glVertex2f(Planet[2].Pos.x, Planet[2].Pos.y);
+    glVertex2f(Planets[2].Pos.x, Planets[2].Pos.y);
     glEnd();
 
     glPointSize(15);
     glBegin(GL_POINTS);
-    glVertex2f(Planet[3].Pos.x, Planet[3].Pos.y);
+    glVertex2f(Planets[3].Pos.x, Planets[3].Pos.y);
     glEnd();
 
     glPointSize(7);
     glBegin(GL_POINTS);
-    glVertex2f(Planet[4].Pos.x, Planet[4].Pos.y);
+    glVertex2f(Planets[4].Pos.x, Planets[4].Pos.y);
     glEnd();
 
-    Planet[1].PaintPhysic();
-    Planet[2].PaintPhysic();
-    Planet[3].PaintPhysic();
-    Planet[4].PaintPhysic();
+    Planets[1].PaintPhysic();
+    Planets[2].PaintPhysic();
+    Planets[3].PaintPhysic();
+    Planets[4].PaintPhysic();
 
     glPopMatrix();
     glutSwapBuffers();
@@ -141,10 +119,10 @@ void Draw(void)
 
 void PaintTimer(int value)
 {
-    SpeedBody(&Planet[1], &Planet[0]);
-    SpeedBody(&Planet[2], &Planet[0]);
-    SpeedBody(&Planet[3], &Planet[0]);
-    SpeedBody(&Planet[4], &Planet[0]);
+    SpeedBody(&Planets[1], &Planets[0]);
+    SpeedBody(&Planets[2], &Planets[0]);
+    SpeedBody(&Planets[3], &Planets[0]);
+    SpeedBody(&Planets[4], &Planets[0]);
 
     glutPostRedisplay();
     glutTimerFunc(COUNT_TIMER, PaintTimer, 0);
@@ -178,40 +156,39 @@ int main(int argv, char* argc[])
     height = glutGet(GLUT_SCREEN_HEIGHT);
 
     //Sun
-    Planet[0].Pos.x = 0.0; 
-    Planet[0].Pos.y = 0.0;
-    Planet[0].m = 2000;
-    //Planet[0].m = 2000000;
-    Planet[0].Speed.x = 0;
-    Planet[0].Speed.y = 0;
+    Planets[0].Pos.x = 0.0; 
+    Planets[0].Pos.y = 0.0;
+    Planets[0].m = 2000;    
+    Planets[0].Speed.x = 0;
+    Planets[0].Speed.y = 0;
 
     // Earth    
-    Planet[1].Pos.x = 0.4;
-    Planet[1].Pos.y = 0.0;
-    Planet[1].m = 6;
-    Planet[1].Speed.x = 0.001;
-    Planet[1].Speed.y = 0.0017;
+    Planets[1].Pos.x = 0.4;
+    Planets[1].Pos.y = 0.0;
+    Planets[1].m = 6;
+    Planets[1].Speed.x = 0.001;
+    Planets[1].Speed.y = 0.0017;
 
     /// Venus
-    Planet[2].Pos.x = 0.3;
-    Planet[2].Pos.y = 0.0;
-    Planet[2].m = 5;
-    Planet[2].Speed.x = 0.001;
-    Planet[2].Speed.y = 0.002;
+    Planets[2].Pos.x = 0.3;
+    Planets[2].Pos.y = 0.0;
+    Planets[2].m = 5;
+    Planets[2].Speed.x = 0.001;
+    Planets[2].Speed.y = 0.002;
 
-    //Mars
-    Planet[3].Pos.x = 0.5;
-    Planet[3].Pos.y = -0.2;
-    Planet[3].m = 4;
-    Planet[3].Speed.x = 0.001;
-    Planet[3].Speed.y = 0.0017;
+    // Mars
+    Planets[3].Pos.x = 0.5;
+    Planets[3].Pos.y = -0.2;
+    Planets[3].m = 4;
+    Planets[3].Speed.x = 0.001;
+    Planets[3].Speed.y = 0.0017;
 
     // Mercury
-    Planet[4].Pos.x = 0.25;
-    Planet[4].Pos.y = 0.0;
-    Planet[4].m = 4;
-    Planet[4].Speed.x = 0.001;
-    Planet[4].Speed.y = 0.0021;
+    Planets[4].Pos.x = 0.25;
+    Planets[4].Pos.y = 0.0;
+    Planets[4].m = 4;
+    Planets[4].Speed.x = 0.001;
+    Planets[4].Speed.y = 0.0021;
 
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
     char str[17] = { 0 };
@@ -222,11 +199,9 @@ int main(int argv, char* argc[])
     glutReshapeFunc(Reshape);
     glutDisplayFunc(Draw);
     glutKeyboardFunc(KeyProc);
-    glutKeyboardUpFunc(KeyUpProc);
     glutDisplayFunc(Draw);
     glutPassiveMotionFunc(PassiveMotionFunc);
     glutMotionFunc(MotionFunc);
-    glutMouseFunc(MouseDown);
     glutTimerFunc(30, PaintTimer, 0);
     glutTimerFunc(20, KeysTimer, 0);
     glutMainLoop();
