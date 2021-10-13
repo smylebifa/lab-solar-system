@@ -1,13 +1,13 @@
 ﻿#include "main.h"
 
 const int FPS = 30;
-const int COUNT_TIMER = 1000 / FPS;
+const int COUNT_TIMER = 100 / FPS;
 const double G = pow(6.6738480808080, -11);
 
 bool keys[256];
 int width, height;
 double XScreen, YScreen, Xf, Yf;
-Body Planet[4];
+Body Planet[5];
 
 void SpeedBody(Body* t1, Body* t2)
 {
@@ -120,13 +120,20 @@ void Draw(void)
     glVertex2f(Planet[2].Pos.x, Planet[2].Pos.y);
     glEnd();
 
-
     glPointSize(15);
     glBegin(GL_POINTS);
     glVertex2f(Planet[3].Pos.x, Planet[3].Pos.y);
     glEnd();
 
-    //Planet[1].PaintPhysic();
+    glPointSize(7);
+    glBegin(GL_POINTS);
+    glVertex2f(Planet[4].Pos.x, Planet[4].Pos.y);
+    glEnd();
+
+    Planet[1].PaintPhysic();
+    Planet[2].PaintPhysic();
+    Planet[3].PaintPhysic();
+    Planet[4].PaintPhysic();
 
     glPopMatrix();
     glutSwapBuffers();
@@ -137,6 +144,8 @@ void PaintTimer(int value)
     SpeedBody(&Planet[1], &Planet[0]);
     SpeedBody(&Planet[2], &Planet[0]);
     SpeedBody(&Planet[3], &Planet[0]);
+    SpeedBody(&Planet[4], &Planet[0]);
+
     glutPostRedisplay();
     glutTimerFunc(COUNT_TIMER, PaintTimer, 0);
 }
@@ -177,11 +186,11 @@ int main(int argv, char* argc[])
     Planet[0].Speed.y = 0;
 
     // Earth    
-    Planet[1].Pos.x = 0.4; 
+    Planet[1].Pos.x = 0.4;
     Planet[1].Pos.y = 0.0;
     Planet[1].m = 6;
     Planet[1].Speed.x = 0.001;
-    Planet[1].Speed.y = 0.0015;
+    Planet[1].Speed.y = 0.0017;
 
     /// Venus
     Planet[2].Pos.x = 0.3;
@@ -196,6 +205,13 @@ int main(int argv, char* argc[])
     Planet[3].m = 4;
     Planet[3].Speed.x = 0.001;
     Planet[3].Speed.y = 0.0017;
+
+    // Mercury
+    Planet[4].Pos.x = 0.25;
+    Planet[4].Pos.y = 0.0;
+    Planet[4].m = 4;
+    Planet[4].Speed.x = 0.001;
+    Planet[4].Speed.y = 0.0021;
 
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
     char str[17] = { 0 };
