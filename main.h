@@ -1,8 +1,3 @@
-struct Point
-{
-	double x, y;
-};
-
 #include <stdio.h>
 #include <math.h>
 #include <iostream>
@@ -12,6 +7,5 @@ struct Point
 
 using namespace std;
 
-extern bool      keys[256];
-extern double    Xf, Yf;
-#pragma once
+extern bool keys[256];
+extern double Xf, Yf;

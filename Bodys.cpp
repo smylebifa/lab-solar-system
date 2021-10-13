@@ -1,11 +1,11 @@
-#include "main.h"
+п»ї#include "main.h"
 void Body::Move()
 {
     Pos.x += Speed.x;
     Pos.y += Speed.y;
 }
 
-void Body::PaintPhysic() // Рисование векторов
+void Body::PaintPhysic()
 {
     glColor3f(1, 0, 0);
 

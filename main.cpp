@@ -1,42 +1,46 @@
-#include "main.h"
+п»ї#include "main.h"
 
 const int FPS = 30;
 const int COUNT_TIMER = 1000 / FPS;
 const double G = pow(6.6738480808080, -11);
 
-bool  keys[256];
-int   width, height;
+bool keys[256];
+int width, height;
 double XScreen, YScreen, Xf, Yf;
-Body Planet[2];
+Body Planet[4];
 
 void SpeedBody(Body* t1, Body* t2)
 {
     double x = (t2->Pos.x) - (t1->Pos.x);
     double y = (t2->Pos.y) - (t1->Pos.y);
+    
     double length = sqrt(x * x + y * y);
+    
     x = x / length;
     y = y / length;
+    
     double a = (G * t1->m * t2->m) / (length * length);
+    
     double a1 = a / t1->m;
     double a2 = a / t2->m;
 
     t1->Speed.x += x * a1;
     t1->Speed.y += y * a1;
 
-    t2->Speed.x += x * a2;
-    t2->Speed.y += y * a2;
+    //t2->Speed.x += x * a2;
+    //t2->Speed.y += y * a2;
 
     t1->Move();
-    t2->Move();
+    //t2->Move();
 }
 
 void Reshape(int width, int height)
 {
-    /* Высота 1.0  - это 768 пиксилей, если высота монитора больне, следовательно веществеенное значение больше
-       Такая же ситуация с шириной. Сделано для того, чтобы разрешение экрана давало приимущество*/
-
-    XScreen = (double)width / (double)768;
-    YScreen = (double)height / (double)768;
+    /* Р’С‹СЃРѕС‚Р° 1.0  - СЌС‚Рѕ 768 РїРёРєСЃРёР»РµР№, РµСЃР»Рё РІС‹СЃРѕС‚Р° РјРѕРЅРёС‚РѕСЂР° Р±РѕР»СЊС€Рµ, 
+    СЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕ РІРµС‰РµСЃС‚РІРµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ Р±РѕР»СЊС€Рµ. РўР°РєР°СЏ Р¶Рµ СЃРёС‚СѓР°С†РёСЏ СЃ С€РёСЂРёРЅРѕР№. 
+    РЎРґРµР»Р°РЅРѕ РґР»СЏ С‚РѕРіРѕ, С‡С‚РѕР±С‹ СЂР°Р·СЂРµС€РµРЅРёРµ СЌРєСЂР°РЅР° РґР°РІР°Р»Рѕ РїСЂРёРёРјСѓС‰РµСЃС‚РІРѕ*/
+    XScreen = (double)width / (double)1280;
+    YScreen = (double)height / (double)1024;
 
     glViewport(0, 0, width, height);
     glMatrixMode(GL_PROJECTION);
@@ -111,7 +115,18 @@ void Draw(void)
     glVertex2f(Planet[1].Pos.x, Planet[1].Pos.y);
     glEnd();
 
-    Planet[1].PaintPhysic();
+    glPointSize(19);
+    glBegin(GL_POINTS);
+    glVertex2f(Planet[2].Pos.x, Planet[2].Pos.y);
+    glEnd();
+
+
+    glPointSize(15);
+    glBegin(GL_POINTS);
+    glVertex2f(Planet[3].Pos.x, Planet[3].Pos.y);
+    glEnd();
+
+    //Planet[1].PaintPhysic();
 
     glPopMatrix();
     glutSwapBuffers();
@@ -120,6 +135,8 @@ void Draw(void)
 void PaintTimer(int value)
 {
     SpeedBody(&Planet[1], &Planet[0]);
+    SpeedBody(&Planet[2], &Planet[0]);
+    SpeedBody(&Planet[3], &Planet[0]);
     glutPostRedisplay();
     glutTimerFunc(COUNT_TIMER, PaintTimer, 0);
 }
@@ -147,20 +164,38 @@ void KeysTimer(int value)
 
 int main(int argv, char* argc[])
 {
-
     glutInit(&argv, argc);
     width = glutGet(GLUT_SCREEN_WIDTH);
     height = glutGet(GLUT_SCREEN_HEIGHT);
 
-    Planet[0].Pos.x = 0.0; Planet[0].Pos.y = 0.0;
-    Planet[0].m = 20000;
+    //Sun
+    Planet[0].Pos.x = 0.0; 
+    Planet[0].Pos.y = 0.0;
+    Planet[0].m = 2000;
+    //Planet[0].m = 2000000;
     Planet[0].Speed.x = 0;
     Planet[0].Speed.y = 0;
 
-    Planet[1].Pos.x = 0.0; Planet[1].Pos.y = 0.3;
-    Planet[1].m = 1;
-    Planet[1].Speed.x = -0.004;
-    Planet[1].Speed.y = -0.008;
+    // Earth    
+    Planet[1].Pos.x = 0.4; 
+    Planet[1].Pos.y = 0.0;
+    Planet[1].m = 6;
+    Planet[1].Speed.x = 0.001;
+    Planet[1].Speed.y = 0.0015;
+
+    /// Venus
+    Planet[2].Pos.x = 0.3;
+    Planet[2].Pos.y = 0.0;
+    Planet[2].m = 5;
+    Planet[2].Speed.x = 0.001;
+    Planet[2].Speed.y = 0.002;
+
+    //Mars
+    Planet[3].Pos.x = 0.5;
+    Planet[3].Pos.y = -0.2;
+    Planet[3].m = 4;
+    Planet[3].Speed.x = 0.001;
+    Planet[3].Speed.y = 0.0017;
 
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
     char str[17] = { 0 };
@@ -179,5 +214,6 @@ int main(int argv, char* argc[])
     glutTimerFunc(30, PaintTimer, 0);
     glutTimerFunc(20, KeysTimer, 0);
     glutMainLoop();
+
     return 0;
 }
